@@ -15,6 +15,9 @@ export const Inventory = ({ items, maxSize, onUseItem }: InventoryProps) => {
       case 'weapon': return '🔪';
       case 'medical': return '🏥';
       case 'material': return '🔧';
+      case 'tool': return '🔦';
+      case 'battery': return '🔋';
+      case 'key': return '🗝️';
       default: return '📦';
     }
   };
@@ -26,6 +29,9 @@ export const Inventory = ({ items, maxSize, onUseItem }: InventoryProps) => {
       case 'weapon': return 'text-health';
       case 'medical': return 'text-terminal-green';
       case 'material': return 'text-muted-foreground';
+      case 'tool': return 'text-warning';
+      case 'battery': return 'text-terminal-green';
+      case 'key': return 'text-primary';
       default: return 'text-foreground';
     }
   };
@@ -58,19 +64,24 @@ export const Inventory = ({ items, maxSize, onUseItem }: InventoryProps) => {
                       {item.effect.fatigue && `+${item.effect.fatigue} Energy`}
                     </div>
                   )}
+                  {item.special && (
+                    <div className="text-xs text-terminal-green font-mono">
+                      {item.special.flashlight && 'Equips Flashlight'}
+                      {item.special.battery && `+${item.special.battery}% Battery`}
+                      {item.special.areaKey && `Unlocks ${item.special.areaKey} area`}
+                    </div>
+                  )}
                 </div>
               </div>
               
-              {item.effect && (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onUseItem(item.id)}
-                  className="font-mono text-xs hover:bg-terminal-green hover:text-background"
-                >
-                  USE
-                </Button>
-              )}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onUseItem(item.id)}
+                className="font-mono text-xs hover:bg-terminal-green hover:text-background"
+              >
+                USE
+              </Button>
             </div>
           ))
         )}

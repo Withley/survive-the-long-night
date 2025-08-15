@@ -17,6 +17,10 @@ export interface Player extends GameEntity {
   fatigue: number;
   inventory: Item[];
   maxInventorySize: number;
+  hasFlashlight: boolean;
+  flashlightBattery: number;
+  currentArea: string;
+  unlockedAreas: string[];
 }
 
 export interface Zombie extends GameEntity {
@@ -30,7 +34,7 @@ export interface Zombie extends GameEntity {
 
 export interface Item extends GameEntity {
   type: 'item';
-  itemType: 'food' | 'water' | 'weapon' | 'medical' | 'material';
+  itemType: 'food' | 'water' | 'weapon' | 'medical' | 'material' | 'tool' | 'battery' | 'key';
   name: string;
   quantity: number;
   effect?: {
@@ -38,6 +42,11 @@ export interface Item extends GameEntity {
     hunger?: number;
     thirst?: number;
     fatigue?: number;
+  };
+  special?: {
+    flashlight?: boolean;
+    battery?: number;
+    areaKey?: string;
   };
 }
 
@@ -56,6 +65,17 @@ export interface GameState {
   gameOver: boolean;
   dayCount: number;
   timeOfDay: number; // 0-24
+  areas: GameArea[];
+}
+
+export interface GameArea {
+  id: string;
+  name: string;
+  isUnlocked: boolean;
+  requiredKey?: string;
+  zombieCount: number;
+  lootQuality: number;
+  description: string;
 }
 
 export interface GameConfig {

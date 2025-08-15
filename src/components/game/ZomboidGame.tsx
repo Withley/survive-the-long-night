@@ -4,9 +4,10 @@ import { GameWorld } from './GameWorld';
 import { StatsPanel } from './StatsPanel';
 import { Inventory } from './Inventory';
 import { GameOverScreen } from './GameOverScreen';
+import { AreaPanel } from './AreaPanel';
 
 export const ZomboidGame = () => {
-  const { gameState, movePlayer, useItem, collectItem, restartGame, worldSize } = useGameState();
+  const { gameState, movePlayer, useItem, collectItem, restartGame, switchArea, worldSize } = useGameState();
 
   // Keyboard controls
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
@@ -85,9 +86,15 @@ export const ZomboidGame = () => {
             />
           </div>
           
-          {/* Side Panel - Stats and Inventory */}
+          {/* Side Panel - Stats, Inventory, and Areas */}
           <div className="space-y-4">
             <StatsPanel player={gameState.player} />
+            <AreaPanel 
+              areas={gameState.areas}
+              currentArea={gameState.player.currentArea}
+              unlockedAreas={gameState.player.unlockedAreas}
+              onSwitchArea={switchArea}
+            />
             <Inventory 
               items={gameState.player.inventory}
               maxSize={gameState.player.maxInventorySize}
@@ -101,6 +108,7 @@ export const ZomboidGame = () => {
                 <p>WASD / Arrow Keys: Move</p>
                 <p>E: Loot (near buildings)</p>
                 <p>Click USE: Consume items</p>
+                <p>Flashlight: Damages zombies</p>
               </div>
             </div>
 
@@ -109,7 +117,8 @@ export const ZomboidGame = () => {
               <h4 className="font-bold terminal-glow mb-2">OBJECTIVES</h4>
               <div className="space-y-1 text-muted-foreground">
                 <p>• Survive as long as possible</p>
-                <p>• Keep stats above critical levels</p>
+                <p>• Find flashlight & batteries</p>
+                <p>• Unlock new areas with keys</p>
                 <p>• Avoid zombies (Z)</p>
                 <p>• Loot buildings for supplies</p>
                 <p>• Manage limited inventory space</p>

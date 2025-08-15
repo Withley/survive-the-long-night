@@ -18,9 +18,38 @@ export const StatsPanel = ({ player }: StatsPanelProps) => {
     return 'bg-terminal-green';
   };
 
+  const currentArea = player.currentArea;
+  const areaDisplayName = currentArea.charAt(0).toUpperCase() + currentArea.slice(1);
+
   return (
     <div className="bg-card border-2 border-primary p-4 space-y-3">
       <h3 className="text-lg font-bold terminal-glow text-center">SURVIVOR STATUS</h3>
+      
+      {/* Current Area */}
+      <div className="p-2 bg-muted/30 rounded border">
+        <div className="text-xs text-muted-foreground font-mono">CURRENT AREA</div>
+        <div className="text-terminal-green font-bold font-mono">{areaDisplayName}</div>
+      </div>
+
+      {/* Flashlight Status */}
+      {player.hasFlashlight && (
+        <div className="p-2 bg-muted/30 rounded border">
+          <div className="text-xs text-muted-foreground font-mono">FLASHLIGHT</div>
+          <div className="flex justify-between items-center">
+            <span className="text-terminal-green font-mono">🔦 EQUIPPED</span>
+            <span className={`font-mono ${player.flashlightBattery > 20 ? 'text-terminal-green' : 'text-health'}`}>
+              {Math.round(player.flashlightBattery)}%
+            </span>
+          </div>
+          <div className="relative mt-1">
+            <Progress value={player.flashlightBattery} className="h-1" />
+            <div 
+              className={`absolute inset-0 h-1 rounded transition-all ${player.flashlightBattery > 20 ? 'bg-terminal-green' : 'bg-health'}`}
+              style={{ width: `${player.flashlightBattery}%` }}
+            />
+          </div>
+        </div>
+      )}
       
       <div className="space-y-2">
         <div className="flex justify-between items-center">
